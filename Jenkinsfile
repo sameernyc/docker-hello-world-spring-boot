@@ -42,8 +42,8 @@ node {
       sh "whoami"
       sh "ls -all /var/run/docker.sock"
       sh "mv ./target/hello*.jar ./data" 
-      
-      dockerImage = docker.build("hello-world-java")
+   
+      dockerImage = docker.build("sameerindeed/hello-world-java")
     }
    
     stage('Deploy Docker Image'){
@@ -52,8 +52,8 @@ node {
 
       echo "Docker Image Tag Name: ${dockerImageTag}"
     docker.withRegistry('https://registry.hub.docker.com', 'docker-crd') {
-     sh "docker tag ${dockerImageName} ${dockerImageTag}"
-      sh "docker push ${dockerImageTag}"
+    dockerImage.push("${env.BUILD_NUMBER}")
+            dockerImage.push("latest")
         }
       
      
